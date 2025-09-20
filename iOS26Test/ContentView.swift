@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isExpanded: Bool = false
+    @Namespace private var animation
     var body: some View {
         ZStack {
             /// Background Image
@@ -22,21 +23,19 @@ struct ContentView: View {
                         VStack(spacing: 20) {
                             Spacer()
                             
-                            if isExpanded {
-                                Group {
-                                    Image(systemName: "suit.heart.fill")
-                                        .font(.title)
-                                        .foregroundStyle(.red.gradient)
-                                        .frame(width: 50, height: 50)
-                                    
-                                    Image(systemName: "magnifyingglass")
-                                        .font(.title)
-                                        .foregroundStyle(.white.gradient)
-                                        .frame(width: 50, height: 50)
-                                }
-                                .glassEffect(.regular, in: .circle)
-                                //.glassEffectTransition(.identity) //이 모디파이어를 사용하여 모핑 효과와 애니메이션을 제거할 수 있습니다!
+                            Group {
+                                Image(systemName: "suit.heart.fill")
+                                    .font(.title)
+                                    .foregroundStyle(.red.gradient)
+                                    .frame(width: 50, height: 50)
+                                
+                                Image(systemName: "magnifyingglass")
+                                    .font(.title)
+                                    .foregroundStyle(.white.gradient)
+                                    .frame(width: 50, height: 50)
                             }
+                            .glassEffect(.regular, in: .capsule)
+                            .glassEffectUnion(id: "Group-1", namespace: animation)
                             
                             Button {
                                 withAnimation(.smooth(duration: 1, extraBounce: 0)) {
@@ -81,6 +80,11 @@ struct ContentView: View {
     glassEffectTransition()
     예를 들어, 앱에서 특정 설정이 활성화되었을 때 애니메이션이 필요하지 않은 경우(예: “Reduce Animations” 토글),
     이 모디파이어를 사용하여 모핑 효과와 애니메이션을 제거할 수 있습니다!
+ 
+    glassUnion()
+    예를 들어, 두 개의 뷰를 그룹화하여 별도의 HStack/VStack을 작성하지 않고 단일 글래스 효과를 만들고 싶다면,
+    이 모디파이어를 사용할 수 있습니다.
+    이 모디파이어는 각 뷰가 개별적으로 효과를 가지는 대신, 단일 글래스 효과를 적용합니다!
 
  3. FoundationModels (SDK)
  (온디바이스 인텔리전스)
