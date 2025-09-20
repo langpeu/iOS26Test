@@ -35,9 +35,12 @@ struct ContentView: View {
                                 let session = LanguageModelSession()
                                 disableControls = true
                                 
-                                let answer = try await session.respond(to: prompt)
-                                self.answer = answer.content
+                                let response = session.streamResponse(to: prompt)
                                 
+                                
+                                for try await chunk in response {
+                                    self.answer = chunk.content
+                                }
                                 
                                 disableControls = false
                             }catch {
