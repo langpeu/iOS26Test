@@ -6,52 +6,57 @@
 //
 
 import SwiftUI
+import FoundationModels
 
 struct ContentView: View {
-    @State private var isExpanded: Bool = false
-    @Namespace private var animation
+    @State private var prompt: String = ""
+    @State private var answer: String = ""
+    @State private var disableControls: Bool = false
     var body: some View {
-        ZStack {
-            /// Background Image
-            Image("Pic")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 300, height: 300)
-                .clipShape(.rect(cornerRadius: 20))
-                .overlay(alignment: .bottom) {
-                    GlassEffectContainer(spacing: 20) {
-                        VStack(spacing: 20) {
-                            Spacer()
-                            
-                            Group {
-                                Image(systemName: "suit.heart.fill")
-                                    .font(.title)
-                                    .foregroundStyle(.red.gradient)
-                                    .frame(width: 50, height: 50)
-                                
-                                Image(systemName: "magnifyingglass")
-                                    .font(.title)
-                                    .foregroundStyle(.white.gradient)
-                                    .frame(width: 50, height: 50)
-                            }
-                            .glassEffect(.regular, in: .capsule)
-                            .glassEffectUnion(id: "Group-1", namespace: animation)
-                            
-                            Button {
-                                withAnimation(.smooth(duration: 1, extraBounce: 0)) {
-                                    isExpanded.toggle()
-                                }
-                            } label: {
-                                Image(systemName: "ellipsis")
-                                    .font(.title)
-                                    .foregroundStyle(.white.gradient)
-                                    .frame(width: 40, height: 40)
-                            }
-                            .buttonStyle(.glass)
-                        }
-                    }
+        NavigationStack {
+            ScrollView(.vertical) {
+                Text(answer)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
                     .padding(15)
+            }
+            .safeAreaBar(edge: .bottom) {
+                HStack(spacing: 10) {
+                    TextField("Prompt", text: $prompt)
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 10)
+                        .glassEffect(.regular, in: .capsule)
+                    
+                    Button {
+                        Task {
+                            guard !prompt.isEmpty else { return }
+                            
+                            do {
+                                let session = LanguageModelSession()
+                                disableControls = true
+                                
+                                let answer = try await session.respond(to: prompt)
+                                self.answer = answer.content
+                                
+                                
+                                disableControls = false
+                            }catch {
+                                disableControls = false
+                                print(error.localizedDescription)
+                            }
+                        }
+                        
+                    } label: {
+                        Image(systemName: "paperplane.fill")
+                            .frame(width: 30, height: 30)
+                    }
+                    .buttonStyle(.glass)
                 }
+                .disabled(disableControls)
+                .padding(25)
+                
+            }
+            .navigationTitle("Foundataion Model")
         }
     }
 }
