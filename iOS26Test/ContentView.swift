@@ -8,16 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var richText = AttributedString()
     var body: some View {
-        GeometryReader {
-            let size = $0.size
-            Image(.pic2)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.width, height: size.height)
-                .clipped()
-                .backgroundExtensionEffect()
-        }
+        TextEditor(text: $richText)
+            .frame(height: 300)
+            .padding(15)
     }
 }
 
@@ -92,5 +87,13 @@ struct ContentView: View {
  그런데 이제 이 기능이 SwiftUI에서 modifier(수정자) 로 제공됩니다!
  이 수정자는 뷰를 사용 가능한 안전 영역(safe areas)까지 확장하며, 그 영역에 은은한 블러 효과를 적용합니다.
 
+ +. Rich TextEditor
 
+ 마침내, TextEditor가 이제 AttributedString 을 Binding으로 지원합니다.
+ 또한 기본 제공 TextEditor에는 몇 가지 유용한 리치 텍스트 편집 기능 옵션도 포함되어 있습니다!
+ 
+ +. Native WebView
+
+ SwiftUI가 이제 Native WebView 를 지원합니다. 스크롤 위치 추적, 스크롤 위치 업데이트,
+ 특정 제스처 비활성화 등 다양한 기본 내장 기능들이 포함되어 있습니다.
 */
