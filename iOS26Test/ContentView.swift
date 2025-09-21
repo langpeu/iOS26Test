@@ -243,6 +243,13 @@ struct ModernAnimationDemo: View {
  animatable 프로토콜에 맞게 구현해야 했습니다.
  그러나 이 간단한 매크로만 사용하면 전체 Shape가 애니메이션화될 수 있습니다.
  그런데, 만약 특정 속성에는 애니메이션이 필요하지 않다면 어떻게 할까요?
+ 
  그 경우에는 해당 속성에 @AnimatableIgnored 매크로를 사용할 수 있습니다!
+ 
+ 
+ +. @Animatable 사용방법 정정
+ 
+ View, ViewModifier 가능
+ Shape (이미 Animatable 프로토콜 채택됨) 사용못함
  
  */
