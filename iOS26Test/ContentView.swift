@@ -6,13 +6,20 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct ContentView: View {
-    @State private var richText = AttributedString()
+    @State private var page = WebPage()
     var body: some View {
-        TextEditor(text: $richText)
-            .frame(height: 300)
-            .padding(15)
+        WebView(page)
+            .webViewMagnificationGestures(.disabled)
+            .onAppear {
+                page.load(URLRequest(url: url))
+            }
+    }
+    
+    var url: URL {
+        URL(string: "https://developer.apple.com")!
     }
 }
 
@@ -75,25 +82,29 @@ struct ContentView: View {
  이것은 LanguageModel에 이러한 속성을 채우는 데 필요한 컨텍스트를 제공합니다.
  또한, @Generable에도 이러한 설명을 제공할 수 있습니다!
  
- +. scrollEdgeEffectStyle()
+ 4. scrollEdgeEffectStyle()
  
  기본적으로, List, Navigation, 그리고 다른 UI 컴포넌트들은 이제 안전 영역(safe areas)에
  부드러운 블러 효과(Progressive Blurs라고도 불림)를 갖습니다. 그러나 SwiftUI는 이러한 효과를
  제어할 수 있는 간단한 수정자(modifier)를 제공합니다.
  
- +. backgroundExtensionEffect()
+ 5. backgroundExtensionEffect()
 
  작은 이미지를 사용할 때 잠금 화면 상단에서 확장된 블러 효과가 나타나는 것을 모두 본 적이 있을 것입니다.
  그런데 이제 이 기능이 SwiftUI에서 modifier(수정자) 로 제공됩니다!
  이 수정자는 뷰를 사용 가능한 안전 영역(safe areas)까지 확장하며, 그 영역에 은은한 블러 효과를 적용합니다.
 
- +. Rich TextEditor
+ 6. Rich TextEditor
 
  마침내, TextEditor가 이제 AttributedString 을 Binding으로 지원합니다.
  또한 기본 제공 TextEditor에는 몇 가지 유용한 리치 텍스트 편집 기능 옵션도 포함되어 있습니다!
  
- +. Native WebView
+ 7. Native WebView
 
  SwiftUI가 이제 Native WebView 를 지원합니다. 스크롤 위치 추적, 스크롤 위치 업데이트,
  특정 제스처 비활성화 등 다양한 기본 내장 기능들이 포함되어 있습니다.
+ 
+ +.WebPage()
+ WebPage를 사용하여 페이지를 불러올 수도 있습니다.
+ 이렇게 하면 웹 페이지를 보다 프로그래밍적으로 제어할 수 있습니다!
 */
