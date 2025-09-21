@@ -51,6 +51,7 @@ struct ContentView: View {
                     .disabled(isWriting)
                 }
             })
+            .scrollEdgeEffectStyle(.hard, for: .top)
         }
     }
 }
@@ -126,6 +127,11 @@ struct Todo: Identifiable {
  부드러운 블러 효과(Progressive Blurs라고도 불림)를 갖습니다. 그러나 SwiftUI는 이러한 효과를
  제어할 수 있는 간단한 수정자(modifier)를 제공합니다.
  
+ +. backgroundExtensionEffect()
+
+ 작은 이미지를 사용할 때 잠금 화면 상단에서 확장된 블러 효과가 나타나는 것을 모두 본 적이 있을 것입니다.
+ 그런데 이제 이 기능이 SwiftUI에서 modifier(수정자) 로 제공됩니다!
+ 이 수정자는 뷰를 사용 가능한 안전 영역(safe areas)까지 확장하며, 그 영역에 은은한 블러 효과를 적용합니다.
 
 
 */
