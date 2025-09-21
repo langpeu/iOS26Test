@@ -6,20 +6,38 @@
 //
 
 import SwiftUI
-import WebKit
 
 struct ContentView: View {
-    @State private var page = WebPage()
     var body: some View {
-        WebView(page)
-            .webViewMagnificationGestures(.disabled)
-            .onAppear {
-                page.load(URLRequest(url: url))
+        TabView {
+            Tab.init("Home", systemImage: "house.fill") {
+                ScrollView(.vertical) {
+                    Text("Home")
+                        .containerRelativeFrame([.horizontal])
+                        .containerRelativeFrame(.vertical) { value, _ in
+                            value * 3
+                        }
+                }
             }
-    }
-    
-    var url: URL {
-        URL(string: "https://developer.apple.com")!
+            
+            Tab.init("Favorite", systemImage: "suit.heart.fill") {
+                Text("Favorite")
+            }
+            
+            Tab.init("Settings", systemImage: "gearshape.fill") {
+                Text("Settings")
+            }
+            
+            Tab.init("Search", systemImage: "magnifyingglass", role: .search) {
+                Text("Search")
+            }
+        }
+        .tabViewBottomAccessory {
+            Text("Custom Music Player!")
+                .padding(.horizontal, 15)
+            
+        }
+        .tabBarMinimizeBehavior(.onScrollDown)
     }
 }
 
@@ -27,14 +45,14 @@ struct ContentView: View {
 ///note
 
 /*
- 1. Liquid Glass Effects 리퀴드 글래스 효과
+ ✅ Liquid Glass Effects 리퀴드 글래스 효과
  
  새로운 리퀴드 글래스 효과는 거의 모든 시스템 전반의 앱, 컨트롤 등에 사용됩니다.
  우리 앱에 이를 적용하는 것은 큰 일이 아닙니다.
  다행히도 SwiftUI는 기본 컨트롤뿐 아니라 사용자 정의 뷰에도 리퀴드 글래스 효과를 지원하여, 이러한 효과를 쉽게 추가할 수 있습니다.
  그럼 이제 이 글래스 효과를 앱에 어떻게 추가할 수 있는지 살펴봅시다.
 
- 2. GlassEffectContainer
+ ✅ GlassEffectContainer
  (Morphing 및 그룹화에 사용됨)
  
  SwiftUI는 GlassEffectContainer라는 네이티브 컨테이너를 제공합니다.
@@ -53,7 +71,7 @@ struct ContentView: View {
     이 모디파이어를 사용할 수 있습니다.
     이 모디파이어는 각 뷰가 개별적으로 효과를 가지는 대신, 단일 글래스 효과를 적용합니다!
 
- 3. FoundationModels (SDK)
+ ✅ FoundationModels (SDK)
  (온디바이스 인텔리전스)
  
  Xcode 26에는 이제 FoundationModels SDK가 포함되어, 온디바이스 인텔리전스 모델을 활용할 수 있습니다.
@@ -82,24 +100,24 @@ struct ContentView: View {
  이것은 LanguageModel에 이러한 속성을 채우는 데 필요한 컨텍스트를 제공합니다.
  또한, @Generable에도 이러한 설명을 제공할 수 있습니다!
  
- 4. scrollEdgeEffectStyle()
+ ✅ scrollEdgeEffectStyle()
  
  기본적으로, List, Navigation, 그리고 다른 UI 컴포넌트들은 이제 안전 영역(safe areas)에
  부드러운 블러 효과(Progressive Blurs라고도 불림)를 갖습니다. 그러나 SwiftUI는 이러한 효과를
  제어할 수 있는 간단한 수정자(modifier)를 제공합니다.
  
- 5. backgroundExtensionEffect()
+ ✅ backgroundExtensionEffect()
 
  작은 이미지를 사용할 때 잠금 화면 상단에서 확장된 블러 효과가 나타나는 것을 모두 본 적이 있을 것입니다.
  그런데 이제 이 기능이 SwiftUI에서 modifier(수정자) 로 제공됩니다!
  이 수정자는 뷰를 사용 가능한 안전 영역(safe areas)까지 확장하며, 그 영역에 은은한 블러 효과를 적용합니다.
 
- 6. Rich TextEditor
+ ✅ Rich TextEditor
 
  마침내, TextEditor가 이제 AttributedString 을 Binding으로 지원합니다.
  또한 기본 제공 TextEditor에는 몇 가지 유용한 리치 텍스트 편집 기능 옵션도 포함되어 있습니다!
  
- 7. Native WebView
+ ✅ Native WebView
 
  SwiftUI가 이제 Native WebView 를 지원합니다. 스크롤 위치 추적, 스크롤 위치 업데이트,
  특정 제스처 비활성화 등 다양한 기본 내장 기능들이 포함되어 있습니다.
@@ -107,4 +125,23 @@ struct ContentView: View {
  +.WebPage()
  WebPage를 사용하여 페이지를 불러올 수도 있습니다.
  이렇게 하면 웹 페이지를 보다 프로그래밍적으로 제어할 수 있습니다!
+ 
+ ✅ TabView Customizations
+
+ 기본적으로, SwiftUI는 새로운 **iOS 26 글로시 탭 바(glossy tab bar)** 에 자동으로 적용됩니다.
+ (단, 앱이 이전에 네이티브 탭 바를 사용했을 경우이며, 커스텀 탭 바를 사용한 경우는 제외됩니다.)
+
+ iOS 26에서는 **검색(Search) 역할의 탭 아이템**이 탭 바에서 제외되어, 탭 바와는 별도로 표시됩니다!
+ 
+ +. tabViewBottomAccessory()
+ iOS 26에서는 TabView 가 이제 탭 바 위에 액세서리 뷰를 추가하는 것을 지원합니다. (Apple Music 앱과 동일한 방식입니다.)
+ 
+ +. tabBarMinimizeBehaviour()
+ Apple Music 앱과 마찬가지로, 이제 탭 바는 스크롤을 내리거나(Scrolled Down) 올릴 때(Scrolled Up)
+ 최소화(minimizing)를 지원합니다.
+ 스크롤을 내리거나 올리면, 검색(Search) 역할의 탭 아이템은 오른쪽으로 이동하고, 탭 바는 최소화되어 왼쪽으로 밀립니다.
+ 또한, 액세서리 뷰는 중앙으로 이동하게 됩니다.
+
+ 
+ 
 */
