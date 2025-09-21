@@ -7,42 +7,125 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @State private var expand: Bool = false
+// ✅ @Animatable 매크로는 View나 ViewModifier에 사용
+@Animatable
+struct ScaleEffect: ViewModifier {
+    var scale: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(scale)
+    }
+}
+
+@Animatable
+struct RotatingView: View {
+    var rotation: Double
+    
     var body: some View {
-        VStack {
-            CircleShape(radius: expand ? 100 : 0)
-                .contentShape(.rect)
-                .onTapGesture {
-                    withAnimation(.smooth) {
-                        expand.toggle()
-                    }
+        Image(systemName: "star.fill")
+            .font(.largeTitle)
+            .foregroundColor(.yellow)
+            .rotationEffect(.degrees(rotation))
+    }
+}
+
+// ✅ 사용 예제
+struct AnimatableMacroDemo: View {
+    @State private var isAnimating = false
+    
+    var body: some View {
+        VStack(spacing: 40) {
+            // ViewModifier 사용
+            Text("Scalable Text")
+                .font(.title)
+                .modifier(ScaleEffect(scale: isAnimating ? 1.5 : 1.0))
+            
+            // Animatable View 사용
+            RotatingView(rotation: isAnimating ? 360 : 0)
+            
+            Button("Animate") {
+                withAnimation(.easeInOut(duration: 2.0)) {
+                    isAnimating.toggle()
                 }
+            }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
     }
 }
 
-// ✅ 올바른 방법: @Animatable 매크로 제거
-struct CircleShape: Shape {
-    var radius: CGFloat
+// MARK: - Shape의 올바른 animatableData 구현 패턴들
 
-    // ✅ animatableData 직접 구현 (Shape는 이미 Animatable 프로토콜 채택)
+// 단일 값 애니메이션
+struct AnimatedLine: Shape {
+    var progress: CGFloat
+    
     var animatableData: CGFloat {
-        get { radius }
-        set { radius = newValue }
+        get { progress }
+        set { progress = newValue }
     }
-
+    
     func path(in rect: CGRect) -> Path {
         Path { path in
-            path
-                .addArc(
-                    center: .init(x: rect.midX, y: rect.midY),
-                    radius: radius,
-                    startAngle: .zero,
-                    endAngle: .init(degrees: 360),
-                    clockwise: false)
+            path.move(to: CGPoint(x: 0, y: rect.midY))
+            path.addLine(to: CGPoint(x: rect.width * progress, y: rect.midY))
         }
+    }
+}
+
+// 복수 값 애니메이션 (AnimatablePair 사용)
+struct AnimatedArc: Shape {
+    var startAngle: Double
+    var endAngle: Double
+    
+    var animatableData: AnimatablePair<Double, Double> {
+        get { AnimatablePair(startAngle, endAngle) }
+        set {
+            startAngle = newValue.first
+            endAngle = newValue.second
+        }
+    }
+    
+    func path(in rect: CGRect) -> Path {
+        Path { path in
+            path.addArc(
+                center: CGPoint(x: rect.midX, y: rect.midY),
+                radius: min(rect.width, rect.height) / 2,
+                startAngle: .degrees(startAngle),
+                endAngle: .degrees(endAngle),
+                clockwise: false
+            )
+        }
+    }
+}
+
+// Swift 6.x + iOS 26 스타일 사용법
+struct ModernAnimationDemo: View {
+    @State private var progress: CGFloat = 0
+    @State private var arcProgress: Double = 0
+    
+    var body: some View {
+        VStack(spacing: 30) {
+            // 진행바 애니메이션
+            AnimatedLine(progress: progress)
+                .stroke(.blue, lineWidth: 4)
+                .frame(height: 4)
+            
+            // 호 애니메이션
+            AnimatedArc(startAngle: 0, endAngle: arcProgress * 360)
+                .stroke(.purple, lineWidth: 8)
+                .frame(width: 100, height: 100)
+            
+            Button("Start Animation") {
+                withAnimation(.easeInOut(duration: 2.0)) {
+                    progress = progress == 0 ? 1.0 : 0
+                    arcProgress = arcProgress == 0 ? 1.0 : 0
+                }
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
     }
 }
 
