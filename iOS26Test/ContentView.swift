@@ -6,62 +6,21 @@
 //
 
 import SwiftUI
-import FoundationModels
 
 struct ContentView: View {
-    @State private var todos: [Todo] = []
-    @State private var isWriting: Bool = false
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(todos) { todo in
-                    Text(todo.task)
-                }
-            }
-            .navigationTitle("Todo")
-            .toolbar(content: {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("", systemImage: "apple.intelligence") {
-                        let propmt = "Create 10 todo list items in Korean"
-                        Task {
-                            do {
-                                let session = LanguageModelSession()
-                                let response = session.streamResponse(generating: [Todo].self) {
-                                    propmt
-                                }
-                                
-                                isWriting = true
-                                for try await chunkTodos in response {
-                                    self.todos = chunkTodos.content.compactMap({
-                                        if let id = $0.id, let task = $0.task {
-                                            return .init(id: id, task: task)
-                                        }
-                                        
-                                        return nil
-                                    })
-                                }
-                                
-                                isWriting = false
-                            }catch {
-                                isWriting = false
-                                print(error.localizedDescription)
-                            }
-                        }
-                    }
-                    .disabled(isWriting)
-                }
-            })
-            .scrollEdgeEffectStyle(.hard, for: .top)
+        GeometryReader {
+            let size = $0.size
+            Image(.pic2)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size.width, height: size.height)
+                .clipped()
+                .backgroundExtensionEffect()
         }
     }
 }
 
-@Generable
-struct Todo: Identifiable {
-    var id: String
-    @Guide(description: "칫솔질") //어떤 내용이 올지 샘플을 제공함
-    var task: String
-}
 
 ///note
 
