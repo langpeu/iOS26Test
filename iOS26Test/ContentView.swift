@@ -46,14 +46,14 @@ struct ContentView: View {
 ///note
 
 /*
- ✅ Liquid Glass Effects 리퀴드 글래스 효과
+ 1. Liquid Glass Effects 리퀴드 글래스 효과
  
  새로운 리퀴드 글래스 효과는 거의 모든 시스템 전반의 앱, 컨트롤 등에 사용됩니다.
  우리 앱에 이를 적용하는 것은 큰 일이 아닙니다.
  다행히도 SwiftUI는 기본 컨트롤뿐 아니라 사용자 정의 뷰에도 리퀴드 글래스 효과를 지원하여, 이러한 효과를 쉽게 추가할 수 있습니다.
  그럼 이제 이 글래스 효과를 앱에 어떻게 추가할 수 있는지 살펴봅시다.
  
- ✅ GlassEffectContainer
+ 2. GlassEffectContainer
  (Morphing 및 그룹화에 사용됨)
  
  SwiftUI는 GlassEffectContainer라는 네이티브 컨테이너를 제공합니다.
@@ -72,7 +72,7 @@ struct ContentView: View {
  이 모디파이어를 사용할 수 있습니다.
  이 모디파이어는 각 뷰가 개별적으로 효과를 가지는 대신, 단일 글래스 효과를 적용합니다!
  
- ✅ FoundationModels (SDK)
+ 3. FoundationModels (SDK)
  (온디바이스 인텔리전스)
  
  Xcode 26에는 이제 FoundationModels SDK가 포함되어, 온디바이스 인텔리전스 모델을 활용할 수 있습니다.
@@ -101,24 +101,24 @@ struct ContentView: View {
  이것은 LanguageModel에 이러한 속성을 채우는 데 필요한 컨텍스트를 제공합니다.
  또한, @Generable에도 이러한 설명을 제공할 수 있습니다!
  
- ✅ scrollEdgeEffectStyle()
+ 4. scrollEdgeEffectStyle()
  
  기본적으로, List, Navigation, 그리고 다른 UI 컴포넌트들은 이제 안전 영역(safe areas)에
  부드러운 블러 효과(Progressive Blurs라고도 불림)를 갖습니다. 그러나 SwiftUI는 이러한 효과를
  제어할 수 있는 간단한 수정자(modifier)를 제공합니다.
  
- ✅ backgroundExtensionEffect()
+ 5. backgroundExtensionEffect()
  
  작은 이미지를 사용할 때 잠금 화면 상단에서 확장된 블러 효과가 나타나는 것을 모두 본 적이 있을 것입니다.
  그런데 이제 이 기능이 SwiftUI에서 modifier(수정자) 로 제공됩니다!
  이 수정자는 뷰를 사용 가능한 안전 영역(safe areas)까지 확장하며, 그 영역에 은은한 블러 효과를 적용합니다.
  
- ✅ Rich TextEditor
+ 6. Rich TextEditor
  
  마침내, TextEditor가 이제 AttributedString 을 Binding으로 지원합니다.
  또한 기본 제공 TextEditor에는 몇 가지 유용한 리치 텍스트 편집 기능 옵션도 포함되어 있습니다!
  
- ✅ Native WebView
+ 7. Native WebView
  
  SwiftUI가 이제 Native WebView 를 지원합니다. 스크롤 위치 추적, 스크롤 위치 업데이트,
  특정 제스처 비활성화 등 다양한 기본 내장 기능들이 포함되어 있습니다.
@@ -127,7 +127,7 @@ struct ContentView: View {
  WebPage를 사용하여 페이지를 불러올 수도 있습니다.
  이렇게 하면 웹 페이지를 보다 프로그래밍적으로 제어할 수 있습니다!
  
- ✅ TabView Customizations
+ 8. TabView Customizations
  
  기본적으로, SwiftUI는 새로운 **iOS 26 글로시 탭 바(glossy tab bar)** 에 자동으로 적용됩니다.
  (단, 앱이 이전에 네이티브 탭 바를 사용했을 경우이며, 커스텀 탭 바를 사용한 경우는 제외됩니다.)
@@ -143,14 +143,14 @@ struct ContentView: View {
  스크롤을 내리거나 올리면, 검색(Search) 역할의 탭 아이템은 오른쪽으로 이동하고, 탭 바는 최소화되어 왼쪽으로 밀립니다.
  또한, 액세서리 뷰는 중앙으로 이동하게 됩니다.
  
- ✅ ToolBarSpacer
+ 9. ToolBarSpacer
  
  기본적으로, 모든 ToolBar 아이템은 iOS 26에서 함께 그룹화됩니다.
  그러나 경우에 따라 버튼을 그룹에서 분리해야 할 필요가 있을 수 있습니다.
  이 새로운 modifier는 ToolBar 아이템을 분리하거나, 여러 개의 ToolBar 아이템 그룹을 만드는 데 특히 유용합니다.
  
  
- ✅ @Animatable
+ 10. @Animatable
  
  보시는 것처럼, 이 원(circle) 모양을 애니메이션화하려면, 이전에는 Shape의 모든 속성을
  animatable 프로토콜에 맞게 구현해야 했습니다.
@@ -166,26 +166,26 @@ struct ContentView: View {
  Shape (이미 Animatable 프로토콜 채택됨) 사용못함
  
  
- ✅ drawOn & drawOff Symbol Effects
+ 11. drawOn & drawOff Symbol Effects
 
  iOS 26에는 새로운 두 가지 심볼 효과가 추가되었습니다.
  이 효과는 전체 레이어 또는 심볼 단위로 **on/off** 표시를 할 수 있습니다.
  이 효과는 **SF Symbols 7 Beta**에서 확인할 수 있습니다!
  
- ✅ draggable(containerItemID) & dragContainer()
+ 12. draggable(containerItemID) & dragContainer()
 
  SwiftUI는 이제 여러 개의 아이템을 드래그 앤 드롭(drag & drop)하여 한 위치에서 다른 위치로 옮기는 것을 지원합니다!
  
  
 
- ✅ DragContainer
+ +. DragContainer
 
  DragContainer는 Item이 Transferable 과 Identifiable 프로토콜 모두를 준수하도록 요구합니다.
  튜토리얼 목적상 단순히 String을 사용하고 있으므로, String이 **Identifiable 프로토콜**을 따르도록 만들어봅시다!
 
  
 
- ✅ Coding Assistant
+ +. Coding Assistant
 
  Xcode 26에는 새로운 코딩 어시스턴트가 도입되었습니다.
  이 어시스턴트는 코드를 수정하고, 문제 해결을 도와주며, 그 외 다양한 지원을 제공합니다.
