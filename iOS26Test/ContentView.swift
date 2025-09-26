@@ -8,39 +8,61 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showButton: Bool = true
-    private var drawOn: SymbolEffectTransition = SymbolEffectTransition.symbolEffect(.drawOn.individually, options: .nonRepeating)
-    private var drawOff: SymbolEffectTransition = SymbolEffectTransition.symbolEffect(.drawOff.individually, options: .nonRepeating)
-    
+    @State private var selectedIDs: [String] = []
     var body: some View {
         VStack(spacing: 20) {
-            VStack(spacing: 15) {
-                if showButton {
-                    _Image(systemName: "square.and.arrow.up")
-                        .transition( showButton ? drawOn : drawOff)
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 15) {
+                ForEach(colorItems) { item in
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(item.color.gradient)
+                        .frame(width: 80, height: 80)
+                        .overlay {
+                            if selectedIDs.contains(item.id) {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.largeTitle)
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                        .onTapGesture {
+                            if selectedIDs.contains(item.id) {
+                                selectedIDs.removeAll { $0 == item.id }
+                            } else {
+                                selectedIDs.append(item.id)
+                            }
+                        }
                 }
             }
-            .frame(height: 32)
             
-            Button {
-                showButton.toggle()
-            } label: {
-                Text( showButton ? "DrawOff" : "DrawOn")
-                    .font(.title)
-            }
+            RoundedRectangle(cornerRadius: 20)
+                .fill(.ultraThinMaterial)
+                .overlay {
+                    Text("Drop Area")
+                        .font(.title2)
+                        .foregroundStyle(Color.secondary)
+                }
         }
-        .padding()
-    }
-    
-    private func _Image(systemName: String) -> some View {
-        Image(systemName: systemName)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 32)
-
+        .padding(20)
     }
    
 }
+
+extension String: @retroactive Identifiable {
+    public var id: String {
+        return self
+    }
+}
+
+struct ColorItem: Identifiable {
+    var id: String = UUID().uuidString
+    var color: Color
+}
+
+let colorItems: [ColorItem] = [ColorItem(color: Color.init(hex: "ff6258")),
+                               ColorItem(color: Color.init(hex: "209dff")),
+                               ColorItem(color: Color.init(hex: "47e161")),
+                               ColorItem(color: Color.init(hex: "ff3e6b")),
+                               ColorItem(color: Color.init(hex: "6fd4f9")),
+                               ColorItem(color: Color.init(hex: "6967ea"))]
 
 
 ///note
@@ -176,14 +198,14 @@ struct ContentView: View {
 
  SwiftUI는 이제 여러 개의 아이템을 드래그 앤 드롭(drag & drop)하여 한 위치에서 다른 위치로 옮기는 것을 지원합니다!
  
- 
-
  +. DragContainer
 
  DragContainer는 Item이 Transferable 과 Identifiable 프로토콜 모두를 준수하도록 요구합니다.
  튜토리얼 목적상 단순히 String을 사용하고 있으므로, String이 **Identifiable 프로토콜**을 따르도록 만들어봅시다!
 
- 
+ +. dropSessionUpdated
+ 이것은 드롭 단계, 드롭 위치, 그리고 기타 관련 세부사항에 대한 정보로 우리를 업데이트합니다.
+ 이 데이터를 통해 우리는 실제로 동적으로 데이터를 업데이트할 수 있습니다!
 
  +. Coding Assistant
 

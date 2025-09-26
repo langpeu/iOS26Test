@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		765940D42E863EAB00BB39B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 765940CD2E863EAB00BB39B6 /* Assets.xcassets */; };
+		765940D52E863EAB00BB39B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765940CE2E863EAB00BB39B6 /* ContentView.swift */; };
+		765940D62E863EAB00BB39B6 /* iOS26TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765940CF2E863EAB00BB39B6 /* iOS26TestApp.swift */; };
+		765940D82E863EBB00BB39B6 /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765940D72E863EBB00BB39B6 /* Color+Ext.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		765940732E7E507A00BB39B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,14 +34,13 @@
 		765940652E7E507900BB39B6 /* iOS26Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS26Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765940722E7E507A00BB39B6 /* iOS26TestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS26TestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7659407C2E7E507A00BB39B6 /* iOS26TestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS26TestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		765940CD2E863EAB00BB39B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		765940CE2E863EAB00BB39B6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		765940CF2E863EAB00BB39B6 /* iOS26TestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS26TestApp.swift; sourceTree = "<group>"; };
+		765940D72E863EBB00BB39B6 /* Color+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		765940672E7E507900BB39B6 /* iOS26Test */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = iOS26Test;
-			sourceTree = "<group>";
-		};
 		765940752E7E507A00BB39B6 /* iOS26TestTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = iOS26TestTests;
@@ -75,7 +81,7 @@
 		7659405C2E7E507900BB39B6 = {
 			isa = PBXGroup;
 			children = (
-				765940672E7E507900BB39B6 /* iOS26Test */,
+				765940D02E863EAB00BB39B6 /* iOS26Test */,
 				765940752E7E507A00BB39B6 /* iOS26TestTests */,
 				7659407F2E7E507A00BB39B6 /* iOS26TestUITests */,
 				765940662E7E507900BB39B6 /* Products */,
@@ -92,6 +98,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		765940D02E863EAB00BB39B6 /* iOS26Test */ = {
+			isa = PBXGroup;
+			children = (
+				765940D92E863EC400BB39B6 /* Extension */,
+				765940CD2E863EAB00BB39B6 /* Assets.xcassets */,
+				765940CE2E863EAB00BB39B6 /* ContentView.swift */,
+				765940CF2E863EAB00BB39B6 /* iOS26TestApp.swift */,
+			);
+			path = iOS26Test;
+			sourceTree = "<group>";
+		};
+		765940D92E863EC400BB39B6 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				765940D72E863EBB00BB39B6 /* Color+Ext.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,9 +131,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				765940672E7E507900BB39B6 /* iOS26Test */,
 			);
 			name = iOS26Test;
 			packageProductDependencies = (
@@ -212,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				765940D42E863EAB00BB39B6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +259,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				765940D52E863EAB00BB39B6 /* ContentView.swift in Sources */,
+				765940D62E863EAB00BB39B6 /* iOS26TestApp.swift in Sources */,
+				765940D82E863EBB00BB39B6 /* Color+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
