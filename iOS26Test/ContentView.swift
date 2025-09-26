@@ -7,126 +7,39 @@
 
 import SwiftUI
 
-// ✅ @Animatable 매크로는 View나 ViewModifier에 사용
-@Animatable
-struct ScaleEffect: ViewModifier {
-    var scale: CGFloat
-    
-    func body(content: Content) -> some View {
-        content
-            .scaleEffect(scale)
-    }
-}
-
-@Animatable
-struct RotatingView: View {
-    var rotation: Double
+struct ContentView: View {
+    @State private var showButton: Bool = true
+    private var drawOn: SymbolEffectTransition = SymbolEffectTransition.symbolEffect(.drawOn.individually, options: .nonRepeating)
+    private var drawOff: SymbolEffectTransition = SymbolEffectTransition.symbolEffect(.drawOff.individually, options: .nonRepeating)
     
     var body: some View {
-        Image(systemName: "star.fill")
-            .font(.largeTitle)
-            .foregroundColor(.yellow)
-            .rotationEffect(.degrees(rotation))
-    }
-}
-
-// ✅ 사용 예제
-struct AnimatableMacroDemo: View {
-    @State private var isAnimating = false
-    
-    var body: some View {
-        VStack(spacing: 40) {
-            // ViewModifier 사용
-            Text("Scalable Text")
-                .font(.title)
-                .modifier(ScaleEffect(scale: isAnimating ? 1.5 : 1.0))
-            
-            // Animatable View 사용
-            RotatingView(rotation: isAnimating ? 360 : 0)
-            
-            Button("Animate") {
-                withAnimation(.easeInOut(duration: 2.0)) {
-                    isAnimating.toggle()
+        VStack(spacing: 20) {
+            VStack(spacing: 15) {
+                if showButton {
+                    _Image(systemName: "square.and.arrow.up")
+                        .transition( showButton ? drawOn : drawOff)
                 }
             }
-            .buttonStyle(.borderedProminent)
+            .frame(height: 32)
+            
+            Button {
+                showButton.toggle()
+            } label: {
+                Text( showButton ? "DrawOff" : "DrawOn")
+                    .font(.title)
+            }
         }
         .padding()
     }
-}
+    
+    private func _Image(systemName: String) -> some View {
+        Image(systemName: systemName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 32)
 
-// MARK: - Shape의 올바른 animatableData 구현 패턴들
-
-// 단일 값 애니메이션
-struct AnimatedLine: Shape {
-    var progress: CGFloat
-    
-    var animatableData: CGFloat {
-        get { progress }
-        set { progress = newValue }
     }
-    
-    func path(in rect: CGRect) -> Path {
-        Path { path in
-            path.move(to: CGPoint(x: 0, y: rect.midY))
-            path.addLine(to: CGPoint(x: rect.width * progress, y: rect.midY))
-        }
-    }
-}
-
-// 복수 값 애니메이션 (AnimatablePair 사용)
-struct AnimatedArc: Shape {
-    var startAngle: Double
-    var endAngle: Double
-    
-    var animatableData: AnimatablePair<Double, Double> {
-        get { AnimatablePair(startAngle, endAngle) }
-        set {
-            startAngle = newValue.first
-            endAngle = newValue.second
-        }
-    }
-    
-    func path(in rect: CGRect) -> Path {
-        Path { path in
-            path.addArc(
-                center: CGPoint(x: rect.midX, y: rect.midY),
-                radius: min(rect.width, rect.height) / 2,
-                startAngle: .degrees(startAngle),
-                endAngle: .degrees(endAngle),
-                clockwise: false
-            )
-        }
-    }
-}
-
-// Swift 6.x + iOS 26 스타일 사용법
-struct ModernAnimationDemo: View {
-    @State private var progress: CGFloat = 0
-    @State private var arcProgress: Double = 0
-    
-    var body: some View {
-        VStack(spacing: 30) {
-            // 진행바 애니메이션
-            AnimatedLine(progress: progress)
-                .stroke(.blue, lineWidth: 4)
-                .frame(height: 4)
-            
-            // 호 애니메이션
-            AnimatedArc(startAngle: 0, endAngle: arcProgress * 360)
-                .stroke(.purple, lineWidth: 8)
-                .frame(width: 100, height: 100)
-            
-            Button("Start Animation") {
-                withAnimation(.easeInOut(duration: 2.0)) {
-                    progress = progress == 0 ? 1.0 : 0
-                    arcProgress = arcProgress == 0 ? 1.0 : 0
-                }
-            }
-            .buttonStyle(.borderedProminent)
-        }
-        .padding()
-    }
+   
 }
 
 
@@ -251,5 +164,33 @@ struct ModernAnimationDemo: View {
  
  View, ViewModifier 가능
  Shape (이미 Animatable 프로토콜 채택됨) 사용못함
+ 
+ 
+ ✅ drawOn & drawOff Symbol Effects
+
+ iOS 26에는 새로운 두 가지 심볼 효과가 추가되었습니다.
+ 이 효과는 전체 레이어 또는 심볼 단위로 **on/off** 표시를 할 수 있습니다.
+ 이 효과는 **SF Symbols 7 Beta**에서 확인할 수 있습니다!
+ 
+ ✅ draggable(containerItemID) & dragContainer()
+
+ SwiftUI는 이제 여러 개의 아이템을 드래그 앤 드롭(drag & drop)하여 한 위치에서 다른 위치로 옮기는 것을 지원합니다!
+ 
+ 
+
+ ✅ DragContainer
+
+ DragContainer는 Item이 Transferable 과 Identifiable 프로토콜 모두를 준수하도록 요구합니다.
+ 튜토리얼 목적상 단순히 String을 사용하고 있으므로, String이 **Identifiable 프로토콜**을 따르도록 만들어봅시다!
+
+ 
+
+ ✅ Coding Assistant
+
+ Xcode 26에는 새로운 코딩 어시스턴트가 도입되었습니다.
+ 이 어시스턴트는 코드를 수정하고, 문제 해결을 도와주며, 그 외 다양한 지원을 제공합니다.
+ 이 기능은 macOS 26 전용으로 제공되며, Xcode → Settings → Intelligence 경로에서 활성화할 수 있습니다.
+ 기본적으로, 어시스턴트는 ChatGPT를 일일 사용 제한과 함께 활용합니다.
+ 하지만, 직접 API 키를 추가하여 커스터마이즈할 수도 있습니다.
  
  */
